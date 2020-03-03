@@ -35,9 +35,7 @@ base_teste['dia'] = dia_teste
 base_teste['hora'] = hora_teste
 #
 normalizador = MinMaxScaler(feature_range=(0.1,0.9))
-normalizador_previsao = base_treinamento.iloc[:, 3:4].values
-normalizador_previsao = np.array(normalizador_previsao)
-normalizador_previsao = normalizador.fit_transform(normalizador_previsao)
+
 #
 base_treinamento_normalizada = normalizador.fit_transform(base_treinamento)
 base_teste_normalizada = normalizador.fit_transform(base_teste)
@@ -46,22 +44,22 @@ base_teste_normalizada = normalizador.fit_transform(base_teste)
 previsores = []
 preco_real = []
 for i in range(90, 1388):
-    previsores.append(base_treinamento_normalizada[i-90:i, 0:6])
+    previsores.append(base_treinamento_normalizada[i-90:i, 0:7])
     preco_real.append(base_treinamento_normalizada[i, 0])
 previsores, preco_real = np.array(previsores), np.array(preco_real)
 #
 
 regressor = Sequential()
-regressor.add(LSTM(units = 100, return_sequences = True, input_shape = (previsores.shape[1], 6)))
+regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (previsores.shape[1], 7)))
 regressor.add(Dropout(0.1))
 
-regressor.add(LSTM(units = 50, return_sequences = True))
+regressor.add(LSTM(units = 25, return_sequences = True))
 regressor.add(Dropout(0.0))
 
-regressor.add(LSTM(units = 50, return_sequences = True))
+regressor.add(LSTM(units = 25, return_sequences = True))
 regressor.add(Dropout(0.0))
 
-regressor.add(LSTM(units = 50))
+regressor.add(LSTM(units = 10))
 regressor.add(Dropout(0.0))
 
 regressor.add(Dense(units = 1, activation = 'sigmoid'))
@@ -70,7 +68,7 @@ regressor.compile(optimizer = 'RMSprop', loss = 'mean_squared_error',
                   metrics = ['mean_squared_error'])
 #
 es = EarlyStopping(monitor = 'loss', min_delta = 1e-6, patience = 10, verbose = 1)
-rlr = ReduceLROnPlateau(monitor = 'loss', factor = 0.01, patience = 10, verbose = 1)
+rlr = ReduceLROnPlateau(monitor = 'loss', factor = 0.01, patience = 5, verbose = 1)
 mcp = ModelCheckpoint(filepath = 'pesos.h5', monitor = 'loss', 
                     save_best_only = True, verbose = 1)
 regressor.fit(previsores, preco_real, epochs = 100, batch_size = 32,
@@ -88,12 +86,24 @@ for i in range(90, 502):
     X_teste.append(entradas[i-90:i, 0:6])
 X_teste = np.array(X_teste)
 #
-
+normalizador_previsao = base_treinamento.iloc[:, 3:4].values
+normalizador_previsao = np.array(normalizador_previsao)
+normalizador_previsao = normalizador.fit_transform(normalizador_previsao)
 previsoes = regressor.predict(X_teste)
-previsoes = np.array(previsoes)
-#previsoes = normalizador_previsao.inverse_transform(previsoes)
+previsoes = normalizador.inverse_transform(previsoes)
 
+#
 
+previsoes.mean()
+preco_real_teste.mean()
+    
+plt.plot(preco_real_teste, color = 'red', label = 'Preço real')
+plt.plot(previsoes, color = 'blue', label = 'Previsões')
+plt.title('Previsão preço das ações')
+plt.xlabel('Tempo')
+plt.ylabel('Valor Yahoo')
+plt.legend()
+plt.show()
 
 
 
