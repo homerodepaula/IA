@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
 import calendar
 import datetime
-headers = ['date', 'low', 'open', 'high', 'close', 'ticks', 'volume']
+headers = ['date', 'open', 'high', 'low', 'close', 'ticks', 'volume']
 base_treinamento = pd.read_csv('WINJ20M15.csv', encoding="utf-16", header=None, names=headers, date_parser=pd.to_datetime)
 base_teste = pd.read_csv('WINJ20H1.csv', encoding="utf-16", header=None, names=headers, date_parser=pd.to_datetime)
 #preco_real_teste = base_teste.iloc[:, 3:4].values
