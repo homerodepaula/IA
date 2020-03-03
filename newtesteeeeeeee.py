@@ -39,7 +39,6 @@ normalizador_previsao = base_treinamento.iloc[:, 3:4].values
 normalizador_previsao = np.array(normalizador_previsao)
 normalizador_previsao = normalizador.fit_transform(normalizador_previsao)
 #
-normalizador = MinMaxScaler(feature_range=(0.1,0.9))
 base_treinamento_normalizada = normalizador.fit_transform(base_treinamento)
 base_teste_normalizada = normalizador.fit_transform(base_teste)
 
@@ -89,11 +88,10 @@ for i in range(90, 502):
     X_teste.append(entradas[i-90:i, 0:6])
 X_teste = np.array(X_teste)
 #
-previsoes = [] 
-previsoes = base_treinamento_normalizada[:, 3:4]
+
 previsoes = regressor.predict(X_teste)
 previsoes = np.array(previsoes)
-##### previsoes = previsoes.inverse_transform(previsoes)
+#previsoes = normalizador_previsao.inverse_transform(previsoes)
 
 
 
