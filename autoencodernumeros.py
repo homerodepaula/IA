@@ -11,7 +11,7 @@ previsores_teste = previsores_teste.astype('float32') / 255
 previsores_treinamento = previsores_treinamento.reshape((len(previsores_treinamento), np.prod(previsores_treinamento.shape[1:])))
 previsores_teste = previsores_teste.reshape((len(previsores_teste), np.prod(previsores_teste.shape[1:])))
 
-# 784 - 32 - 784
+#784-32-784
 fator_compactacao = 784 / 32
 
 autoencoder = Sequential()
