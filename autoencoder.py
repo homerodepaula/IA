@@ -43,9 +43,9 @@ c1.fit(previsores_treinamento, classe_dummy_treinamento, batch_size = 256,
 
 # com redução de dimensionalidade
 c2 = Sequential()
-c2.add(Dense(units = 21, activation = 'relu', input_dim = 32))
-c2.add(Dense(units = 21, activation = 'relu'))
-c2.add(Dense(units = 10, activation = 'softmax'))
+c2.add(Dense(units = 20, activation = 'relu', input_dim = 32))
+c2.add(Dense(units = 15, activation = 'relu'))
+c2.add(Dense(units = 5, activation = 'softmax'))
 c2.compile(optimizer = 'adam', loss = 'categorical_crossentropy',
            metrics = ['accuracy'])
 c2.fit(previsores_treinamento_codificados, classe_dummy_treinamento, batch_size = 256,
