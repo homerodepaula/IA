@@ -44,9 +44,6 @@ def criar_rede(loss):
     regressor.compile(loss=loss, optimizer='adam', metrics=['mean_absolute_error'])
     return regressor
 
-# Não é necessário alterar o parâmetro metrics pois ele é usado somente para 
-# mostrar o resultado e de fato ele não é utilizado no treinamento da rede neural
-
 regressor = KerasRegressor(build_fn = criar_rede, epochs = 100, batch_size = 300)
 parametros = {'loss': ['mean_squared_error', 'mean_absolute_error',
                        'mean_absolute_percentage_error', 'mean_squared_logarithmic_error',
