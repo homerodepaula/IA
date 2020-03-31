@@ -104,7 +104,7 @@ x_teste = np.array(x_teste)
 #
 
 previsoes = regressor.predict(x_teste)
-############ PROBLEMAAAAAAAAAAAAA ##########    previ = normalizador_previsao.inverse_transform(previsoes)
+previ = normalizador_previsao.inverse_transform(previsoes)
 
     
     
